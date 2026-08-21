@@ -10,6 +10,7 @@ async function crearConexion() {
 }
 
 async function main() {
+
     let opcion = 0;
     let resultado = 0;
     const conexionBD = await crearConexion();
@@ -32,12 +33,13 @@ async function menuDeOpciones(opcion, resultado, conexionBD) {
     switch (opcion) {
         case 1:
             resultado = await conexionBD.query("select * from golosinas;");
-            console.log(resultado);
+            console.table(resultado[0]);
 
             break;
         case 2:
-
-            resultado = await conexionBD.query("insert into golosinas (nombre,marca) values (?,?);", ["naranju", "walmart"]);
+            const nombre = leer();
+            const marca = leer ();
+            resultado = await conexionBD.query("insert into golosinas (nombre,marca) values (?,?);", [nombre, marca]);
             console.log(resultado);
             break;
         case 3:
@@ -53,7 +55,7 @@ async function menuDeOpciones(opcion, resultado, conexionBD) {
 
 function menu() {
     console.log("\n--- MENÚ PRINCIPAL ---");
-    console.log("1- Mostrar Tablas");
+    console.log("1- Mostrar Datos de Tabla");
     console.log("2- Insertar Datos");
     console.log("3- Actualizar Datos");
     console.log("4- Borrar Datos");
