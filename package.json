@@ -1,0 +1,24 @@
+{
+  "name": "basededatos",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Herlyck/BaseDeDatos.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Herlyck/BaseDeDatos/issues"
+  },
+  "homepage": "https://github.com/Herlyck/BaseDeDatos#readme",
+  "dependencies": {
+    "mysql2": "^3.23.4"
+  }
+}
