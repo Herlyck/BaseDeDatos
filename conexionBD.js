@@ -11,7 +11,8 @@ async function crearConexion() {
 
 async function main() {
     const conexionBD = await crearConexion();
-    console.log(conexionBD);
+    const resultado = await conexionBD.query("SELECT * FROM golosinas;");
+    console.log(resultado);
     conexionBD.end();
 }
 main();
