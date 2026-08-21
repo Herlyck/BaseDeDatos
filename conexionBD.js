@@ -1,3 +1,4 @@
+const 
 const { createConnection } = require("mysql2/promise");
 
 async function crearConexion() {
@@ -5,7 +6,7 @@ async function crearConexion() {
         host: "localhost",
         user: "root",
         database: "Kiosco",
-        password: "Peter20221103"
+        password: "1234"
     });
 }
 
