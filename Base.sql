@@ -20,3 +20,4 @@ delete from golosinas where id = 3;
 
 update golosinas set nombre = "Papas Fritas", marca="Lays" where id = 2;
         /* tabla      columna   contenido     columna2 contenido  y posicion 2     */
+
