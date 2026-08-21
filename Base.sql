@@ -5,7 +5,14 @@ use kiosco;
 create table golosinas(
     id int primary key auto_increment,
     nombre varchar(50) not null,
-    marca varchar(50) not null
+    marca varchar(50) not null,
+    precio int null 
+);
+
+create table proovedores(
+    id int primary key auto_increment,
+    nombre varchar(50) not null,
+    stock varchar(50) not null
 
 );
 
