@@ -1,4 +1,3 @@
-const 
 const { createConnection } = require("mysql2/promise");
 
 async function crearConexion() {
