@@ -1,4 +1,4 @@
-drop database if kiosco exists;
+drop database if exists Kiosco;
 create database Kiosco;
 use kiosco;
 
@@ -19,3 +19,4 @@ insert into golosinas (nombre,marca) values ("Galletitas","Oreo");
 delete from golosinas where id = 3;
 
 update golosinas set nombre = "Papas Fritas", marca="Lays" where id = 2;
+        /* tabla      columna   contenido     columna2 contenido  y posicion 2     */
