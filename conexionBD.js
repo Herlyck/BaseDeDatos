@@ -37,11 +37,15 @@ async function menuDeOpciones(opcion, resultado, conexionBD) {
             console.log("2. Clientes");
             
             
-            const subOpcion = Number(leer("Ingrese opcion"));
+            const subOpcion = Number(leer("Ingrese opcion: "));
             switch (subOpcion) {
                 case 1:
                     
                     resultado = await conexionBD.query("select * from golosinas;");
+                    console.table(resultado[0]);
+                    break;
+                case 2:
+                    resultado = await conexionBD.query("select * from proovedores;");
                     console.table(resultado[0]);
                     break;
 
@@ -55,7 +59,7 @@ async function menuDeOpciones(opcion, resultado, conexionBD) {
             const nombre = leer("Ingrese nombre del Producto: ");
             const marca = leer("Ingrese marca del producto: ");
             resultado = await conexionBD.query("insert into golosinas (nombre,marca) values (?,?);", [nombre, marca]);
-            console.log(resultado);
+            
             break;
         case 3:
 
