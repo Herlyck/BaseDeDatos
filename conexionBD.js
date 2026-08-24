@@ -15,15 +15,11 @@ async function main() {
     let resultado = 0;
     const conexionBD = await crearConexion();
     // const resultado = await conexionBD.query("SELECT * FROM golosinas;");
-
     menu();
-
 
     opcion = Number(leer("Ingrese Opcion: "));
     // const resultado = await conexionBD.query("SELECT * FROM golosinas;");
     resultado = await menuDeOpciones(opcion, resultado, conexionBD);
-
-
     conexionBD.end();
 }
 main();
@@ -34,13 +30,11 @@ async function menuDeOpciones(opcion, resultado, conexionBD) {
         case 1:
             console.log("Tabla a consultar:");
             console.log("1. Golosinas");
-            console.log("2. Clientes");
-            
-            
+            console.log("2. Proovedores");
+
             const subOpcion = Number(leer("Ingrese opcion: "));
             switch (subOpcion) {
                 case 1:
-                    
                     resultado = await conexionBD.query("select * from golosinas;");
                     console.table(resultado[0]);
                     break;
@@ -48,21 +42,33 @@ async function menuDeOpciones(opcion, resultado, conexionBD) {
                     resultado = await conexionBD.query("select * from proovedores;");
                     console.table(resultado[0]);
                     break;
-
                 default:
                     break;
             }
-
 
             break;
         case 2:
             const nombre = leer("Ingrese nombre del Producto: ");
             const marca = leer("Ingrese marca del producto: ");
             resultado = await conexionBD.query("insert into golosinas (nombre,marca) values (?,?);", [nombre, marca]);
-            
+
             break;
         case 3:
+            console.log("Que desea actualizar?:");
+            console.log("1. Golosinas");
+            console.log("2. Proovedores");
 
+            const subActualizar = Number(leer("Ingrese opcion: "));
+            switch (subActualizar) {
+                case 1:
+                    resultado = await conexionBD.query(`UPDATE golosinas SET nombre = "coca-cola", marca = "cokita" WHERE id =  1;`);
+                    resultado = await conexionBD.query("select * from golosinas;");
+                    console.table(resultado[0]);
+                    break;
+
+                default:
+                    break;
+            }
             break;
 
         default:

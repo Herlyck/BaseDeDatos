@@ -6,7 +6,7 @@ create table golosinas(
     id int primary key auto_increment,
     nombre varchar(50) not null,
     marca varchar(50) not null,
-    precio int null 
+    precio int default 1000 
 );
 
 create table proovedores(
@@ -28,3 +28,7 @@ delete from golosinas where id = 3;
 update golosinas set nombre = "Papas Fritas", marca="Lays" where id = 2;
         /* tabla      columna   contenido     columna2 contenido  y posicion 2     */
 
+
+insert into proovedores (nombre,stock) values ("Alfajor","stock");
+insert into proovedores (nombre,stock) values ("Galletitas","sin stock");
+insert into proovedores (nombre,stock) values ("Galletitas","sin stock");

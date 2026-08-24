@@ -10,10 +10,7 @@ async function crearConexion() {
 }
 
 async function main() {
-
-    
     const conexionBD = await crearConexion();
-    // const resultado = await conexionBD.query("SELECT * FROM golosinas;");
     conexionBD.end();
 }
 main();
