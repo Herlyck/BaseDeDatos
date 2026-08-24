@@ -12,41 +12,47 @@ async function crearConexion() {
 async function main() {
 
     let opcion = 0;
-    let resultado = 0;
     const conexionBD = await crearConexion();
     // const resultado = await conexionBD.query("SELECT * FROM golosinas;");
     menu();
 
     opcion = Number(leer("Ingrese Opcion: "));
     // const resultado = await conexionBD.query("SELECT * FROM golosinas;");
-    resultado = await menuDeOpciones(opcion, resultado, conexionBD);
+    await menuDeOpciones(opcion, conexionBD);
     conexionBD.end();
 }
 main();
 
 //------------------------------Modularizacion----------------------------------------------
-async function menuDeOpciones(opcion, resultado, conexionBD) {
+
+/**
+ * 
+ * @param {Number} opcion Valor numerico para seleccionar menu
+ * @param {*} conexionBD 
+ * @returns 
+ */
+async function menuDeOpciones(opcion, conexionBD) {
+
     switch (opcion) {
         case 1:
-            resultado = await mostrarDatosTablas(resultado, conexionBD);
+            await mostrarDatosTablas(conexionBD);
             break;
         case 2:
-            resultado = await insertarProductos(resultado, conexionBD);
+            await insertarProductos(conexionBD);
             break;
         case 3:
-            resultado = await actualizacionDatos(resultado, conexionBD);
+            await actualizacionDatos(conexionBD);
             break;
 
     }
-    return resultado;
 }
 
-async function mostrarDatosTablas(resultado, conexionBD) {
+async function mostrarDatosTablas(conexionBD) {
     miniMenuTablas();
 
     const subOpcion = Number(leer("Ingrese opcion: "));
-    resultado = await subMenuTablas(subOpcion, resultado, conexionBD);
-    return resultado;
+    await subMenuTablas(subOpcion, conexionBD);
+
 }
 
 function miniMenuTablas() {
@@ -105,7 +111,8 @@ async function actualizarProovedores(resultado, conexionBD) {
 }
 
 
-async function subMenuTablas(subOpcion, resultado, conexionBD) {
+async function subMenuTablas(subOpcion, conexionBD) {
+    let resultado = 0;
     switch (subOpcion) {
         case 1:
             resultado = await conexionBD.query("select * from golosinas;");
@@ -118,7 +125,7 @@ async function subMenuTablas(subOpcion, resultado, conexionBD) {
 
 
     }
-    return resultado;
+
 }
 
 function menu() {
