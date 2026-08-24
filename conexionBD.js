@@ -1,3 +1,4 @@
+const { Connection } = require("mysql2");
 const { createConnection } = require("mysql2/promise");
 const leer = require("prompt-sync")();
 async function crearConexion() {
@@ -26,10 +27,9 @@ main();
 //------------------------------Modularizacion----------------------------------------------
 
 /**
- * 
+ * Ejecuta las opciones con la conexion de base de datos
  * @param {Number} opcion Valor numerico para seleccionar menu
- * @param {*} conexionBD 
- * @returns 
+ * @param {Connection} conexionBD conexion a la base de datos
  */
 async function menuDeOpciones(opcion, conexionBD) {
 
@@ -43,10 +43,29 @@ async function menuDeOpciones(opcion, conexionBD) {
         case 3:
             await actualizacionDatos(conexionBD);
             break;
-
+        case 4:
+            await eliminarDato(conexionBD);
+            break;
     }
 }
+/**
+ * 
+ * @param {connection} conexionBD conexion a la base de datos
+ */
+async function eliminarDato(conexionBD) {
+    let resultado = 0;
+    let subopcion=0;
+    subopcion=Number(leer("ingrese ID a eliminar: "))
+    await conexionBD.query("DELETE FROM golosinas WHERE id = ?;",[subopcion]);
+    resultado = await conexionBD.query("select * from golosinas;");
+    console.log(resultado[0]);
+    
+}
 
+/**
+ * Muestra las tablas de la base de datos
+ * @param {Connection} conexionBD conexion a la base de datos
+ */
 async function mostrarDatosTablas(conexionBD) {
     miniMenuTablas();
 
@@ -54,37 +73,56 @@ async function mostrarDatosTablas(conexionBD) {
     await subMenuTablas(subOpcion, conexionBD);
 
 }
-
+/**
+ * Muestra las opciones de las tablas
+ */
 function miniMenuTablas() {
     console.log("Tabla a consultar:");
     console.log("1. Golosinas");
     console.log("2. Proovedores");
 }
 
-async function actualizacionDatos(resultado, conexionBD) {
+/**
+ * Actualizacion de los datos en las tablas seleccionada
+ * @param {Connection} conexionBD conexion a la base de datos
+ */
+async function actualizacionDatos(conexionBD) {
     miniMenuActualizar();
 
     const subActualizar = Number(leer("Ingrese opcion: "));
-    resultado = await subMenuActualizar(subActualizar, resultado, conexionBD);
-    return resultado;
+    await subMenuActualizar(subActualizar, conexionBD);
+
 }
 
+/**
+ * Muestra las opciones de las tablas a actualizar
+ */
 function miniMenuActualizar() {
     console.log("Que desea actualizar?:");
     console.log("1. Golosinas");
     console.log("2. Proovedores");
 }
 
-async function insertarProductos(resultado, conexionBD) {
+/**
+ * Inserta Productos en golosinas
+ * @param {Connection} conexionBD conexion a la base de datos
+ */
+async function insertarProductos(conexionBD) {
     const nombre = leer("Ingrese nombre del Producto: ");
     const marca = leer("Ingrese marca del producto: ");
-    resultado = await conexionBD.query("insert into golosinas (nombre,marca) values (?,?);", [nombre, marca]);
-    return resultado;
+    await conexionBD.query("insert into golosinas (nombre,marca) values (?,?);", [nombre, marca]);
+
 }
 
-
-async function subMenuActualizar(subActualizar, resultado, conexionBD) {
+/**
+ * Actualizacion de nombres y marcas de los productos de pendiendo de la opcion
+ * @param {Number} subActualizar opcion de actualizar seleccionada
+ * @param {Connection} conexionBD conexion a la base de datos
+ */
+async function subMenuActualizar(subActualizar, conexionBD) {
+    let resultado = 0;
     switch (subActualizar) {
+
         case 1:
             const nombre = leer("Ingrese nombre del Producto: ");
             const marca = leer("Ingrese marca del producto: ");
@@ -94,23 +132,31 @@ async function subMenuActualizar(subActualizar, resultado, conexionBD) {
             break;
 
         case 2:
-            resultado = await actualizarProovedores(resultado, conexionBD);
+            await actualizarProovedores(conexionBD);
             break;
     }
-    return resultado;
+
 }
 
-
-async function actualizarProovedores(resultado, conexionBD) {
-    resultado = await conexionBD.query(`UPDATE proovedores SET nombre = "naranju", stock = "sin stock" WHERE id =  1;`);
-    resultado = await conexionBD.query(`UPDATE proovedores SET nombre = "helados", stock = "stock" WHERE id =  2;`);
-    resultado = await conexionBD.query(`UPDATE proovedores SET nombre = "patys", stock = "stock" WHERE id =  3;`);
+/**
+ * Actualiza los productos/stock de proovedores
+ * @param {Connection} conexionBD conexion a la base de datos
+ */
+async function actualizarProovedores(conexionBD) {
+    let resultado = 0;
+    await conexionBD.query(`UPDATE proovedores SET nombre = "naranju", stock = "sin stock" WHERE id =  1;`);
+    await conexionBD.query(`UPDATE proovedores SET nombre = "helados", stock = "stock" WHERE id =  2;`);
+    await conexionBD.query(`UPDATE proovedores SET nombre = "patys", stock = "stock" WHERE id =  3;`);
     resultado = await conexionBD.query("select * from proovedores;");
     console.table(resultado[0]);
-    return resultado;
+    
 }
 
-
+/**
+ * Muestra los valores de la tabla seleccionada
+ * @param {Number} subOpcion Navegacion en el menu
+ * @param {*} conexionBD conexion a la base de datos
+ */
 async function subMenuTablas(subOpcion, conexionBD) {
     let resultado = 0;
     switch (subOpcion) {
@@ -127,7 +173,9 @@ async function subMenuTablas(subOpcion, conexionBD) {
     }
 
 }
-
+/**
+ * Menu principal de la Base de Datos
+ */
 function menu() {
     console.log("\n--- MENÚ PRINCIPAL ---");
     console.log("1- Mostrar Datos de Tabla");
