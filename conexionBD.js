@@ -28,52 +28,93 @@ main();
 async function menuDeOpciones(opcion, resultado, conexionBD) {
     switch (opcion) {
         case 1:
-            console.log("Tabla a consultar:");
-            console.log("1. Golosinas");
-            console.log("2. Proovedores");
-
-            const subOpcion = Number(leer("Ingrese opcion: "));
-            switch (subOpcion) {
-                case 1:
-                    resultado = await conexionBD.query("select * from golosinas;");
-                    console.table(resultado[0]);
-                    break;
-                case 2:
-                    resultado = await conexionBD.query("select * from proovedores;");
-                    console.table(resultado[0]);
-                    break;
-                default:
-                    break;
-            }
-
+            resultado = await mostrarDatosTablas(resultado, conexionBD);
             break;
         case 2:
-            const nombre = leer("Ingrese nombre del Producto: ");
-            const marca = leer("Ingrese marca del producto: ");
-            resultado = await conexionBD.query("insert into golosinas (nombre,marca) values (?,?);", [nombre, marca]);
-
+            resultado = await insertarProductos(resultado, conexionBD);
             break;
         case 3:
-            console.log("Que desea actualizar?:");
-            console.log("1. Golosinas");
-            console.log("2. Proovedores");
-
-            const subActualizar = Number(leer("Ingrese opcion: "));
-            switch (subActualizar) {
-                case 1:
-                    resultado = await conexionBD.query(`UPDATE golosinas SET nombre = "coca-cola", marca = "cokita" WHERE id =  1;`);
-                    resultado = await conexionBD.query("select * from golosinas;");
-                    console.table(resultado[0]);
-                    break;
-
-                default:
-                    break;
-            }
+            resultado = await actualizacionDatos(resultado, conexionBD);
             break;
 
-        default:
+    }
+    return resultado;
+}
 
+async function mostrarDatosTablas(resultado, conexionBD) {
+    miniMenuTablas();
+
+    const subOpcion = Number(leer("Ingrese opcion: "));
+    resultado = await subMenuTablas(subOpcion, resultado, conexionBD);
+    return resultado;
+}
+
+function miniMenuTablas() {
+    console.log("Tabla a consultar:");
+    console.log("1. Golosinas");
+    console.log("2. Proovedores");
+}
+
+async function actualizacionDatos(resultado, conexionBD) {
+    miniMenuActualizar();
+
+    const subActualizar = Number(leer("Ingrese opcion: "));
+    resultado = await subMenuActualizar(subActualizar, resultado, conexionBD);
+    return resultado;
+}
+
+function miniMenuActualizar() {
+    console.log("Que desea actualizar?:");
+    console.log("1. Golosinas");
+    console.log("2. Proovedores");
+}
+
+async function insertarProductos(resultado, conexionBD) {
+    const nombre = leer("Ingrese nombre del Producto: ");
+    const marca = leer("Ingrese marca del producto: ");
+    resultado = await conexionBD.query("insert into golosinas (nombre,marca) values (?,?);", [nombre, marca]);
+    return resultado;
+}
+
+
+async function subMenuActualizar(subActualizar, resultado, conexionBD) {
+    switch (subActualizar) {
+        case 1:
+            resultado = await conexionBD.query(`UPDATE golosinas SET nombre = "coca-cola", marca = "cokita" WHERE id =  1;`);
+            resultado = await conexionBD.query("select * from golosinas;");
+            console.table(resultado[0]);
             break;
+
+        case 2:
+            resultado = await actualizarProovedores(resultado, conexionBD);
+            break;
+    }
+    return resultado;
+}
+
+
+async function actualizarProovedores(resultado, conexionBD) {
+    resultado = await conexionBD.query(`UPDATE proovedores SET nombre = "naranju", stock = "sin stock" WHERE id =  1;`);
+    resultado = await conexionBD.query(`UPDATE proovedores SET nombre = "helados", stock = "stock" WHERE id =  2;`);
+    resultado = await conexionBD.query(`UPDATE proovedores SET nombre = "patys", stock = "stock" WHERE id =  3;`);
+    resultado = await conexionBD.query("select * from proovedores;");
+    console.table(resultado[0]);
+    return resultado;
+}
+
+
+async function subMenuTablas(subOpcion, resultado, conexionBD) {
+    switch (subOpcion) {
+        case 1:
+            resultado = await conexionBD.query("select * from golosinas;");
+            console.table(resultado[0]);
+            break;
+        case 2:
+            resultado = await conexionBD.query("select * from proovedores;");
+            console.table(resultado[0]);
+            break;
+        
+        
     }
     return resultado;
 }
