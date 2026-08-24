@@ -49,8 +49,8 @@ async function menuDeOpciones(opcion, conexionBD) {
     }
 }
 /**
- * 
- * @param {connection} conexionBD conexion a la base de datos
+ * Eliminar Datos de la tabla
+ * @param {Connection} conexionBD conexion a la base de datos
  */
 async function eliminarDato(conexionBD) {
     let resultado = 0;
@@ -120,15 +120,15 @@ async function insertarProductos(conexionBD) {
  * @param {Connection} conexionBD conexion a la base de datos
  */
 async function subMenuActualizar(subActualizar, conexionBD) {
-    let resultado = 0;
+    
     switch (subActualizar) {
-
+        
         case 1:
             const nombre = leer("Ingrese nombre del Producto: ");
             const marca = leer("Ingrese marca del producto: ");
             resultado = await conexionBD.query(`UPDATE golosinas SET nombre = ?, marca = ? WHERE id =  1;`, [nombre, marca]);
-            resultado = await conexionBD.query("select * from golosinas;");
-            console.table(resultado[0]);
+            resultado = await mostrarGolosinas(resultado, conexionBD);
+            
             break;
 
         case 2:
@@ -137,6 +137,21 @@ async function subMenuActualizar(subActualizar, conexionBD) {
     }
 
 }
+/**
+ * Muestra la tabla (mejorar para cualquier tabla...)
+ * @param {*} conexionBD 
+ */
+async function mostrarGolosinas(conexionBD) {
+    let resultado = 0;
+    resultado = await conexionBD.query("select * from golosinas;");
+    console.table(resultado[0]);
+}
+
+/* async function mostrarProovedores(resultado, conexionBD) {
+    let resultado = 0;
+    resultado = await conexionBD.query("select * from proovedores;");
+    console.table(resultado[0]);
+} */
 
 /**
  * Actualiza los productos/stock de proovedores
