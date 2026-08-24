@@ -24,7 +24,7 @@ async function main() {
 }
 main();
 
-
+//------------------------------Modularizacion----------------------------------------------
 async function menuDeOpciones(opcion, resultado, conexionBD) {
     switch (opcion) {
         case 1:
@@ -80,7 +80,9 @@ async function insertarProductos(resultado, conexionBD) {
 async function subMenuActualizar(subActualizar, resultado, conexionBD) {
     switch (subActualizar) {
         case 1:
-            resultado = await conexionBD.query(`UPDATE golosinas SET nombre = "coca-cola", marca = "cokita" WHERE id =  1;`);
+            const nombre = leer("Ingrese nombre del Producto: ");
+            const marca = leer("Ingrese marca del producto: ");
+            resultado = await conexionBD.query(`UPDATE golosinas SET nombre = ?, marca = ? WHERE id =  1;`, [nombre, marca]);
             resultado = await conexionBD.query("select * from golosinas;");
             console.table(resultado[0]);
             break;
@@ -113,8 +115,8 @@ async function subMenuTablas(subOpcion, resultado, conexionBD) {
             resultado = await conexionBD.query("select * from proovedores;");
             console.table(resultado[0]);
             break;
-        
-        
+
+
     }
     return resultado;
 }
